@@ -5,6 +5,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { TextField, Button, Snackbar } from '@material-ui/core';
 import { AddCircleOutline } from '@material-ui/icons';
 
+import BuyList from '../../components/BuyList';
+
 import * as actions from '../../../redux/actions';
 
 const styles = {
@@ -24,9 +26,11 @@ class InputList extends Component {
     super(props);
     this.state = {
       inputItem: '',
+      buyListKey: 0,
       errorMsg: null,
     };
     this.onAddItem = this.onAddItem.bind(this);
+    this.onAddItemToCart = this.onAddItemToCart.bind(this);
   }
 
   onAddItem() {
@@ -40,8 +44,16 @@ class InputList extends Component {
     } else {
       this.props.addItemToBuyList(this.state.inputItem);
       this.setState({ inputItem: '' });
-      // console.log(...this.props.buyList);
     }
+  }
+
+  onAddItemToCart(item) {
+    this.props.addItemToCart(item);
+    this.props.removeItemFromBuyList(item);
+
+    // eslint-disable-next-line react/no-access-state-in-setstate
+    const nextKey = this.state.buyListKey + 1;
+    this.setState({ buyListKey: nextKey });
   }
 
   render() {
@@ -68,7 +80,10 @@ class InputList extends Component {
           </Button>
         </section>
         <section>
-          {this.props.buyList}
+          <BuyList
+            key={this.state.buyListKey}
+            onAddItemToCart={this.onAddItemToCart}
+          />
         </section>
         <aside>
           <Snackbar
