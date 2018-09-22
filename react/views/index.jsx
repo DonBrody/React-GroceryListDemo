@@ -16,7 +16,7 @@ const Main = () => (
       <MainAppBar />
     </header>
 
-    <main className="container" style={{ marginTop: 80, marginBottom: 25 }} role="main">
+    <main className="container" style={{ marginTop: 80, marginBottom: 50 }} role="main">
       <Switch>
         <Route exact path="/" component={InputList} />
         <Route exact path="/cart" component={Cart} />

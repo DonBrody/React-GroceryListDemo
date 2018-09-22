@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import { withStyles } from '@material-ui/core/styles';
 import { AppBar, IconButton, Badge } from '@material-ui/core';
@@ -31,13 +32,24 @@ const MainAppBar = props => (
       </Link>
       <Link to="/cart" push>
         <IconButton className={props.classes.routeButton} style={{ marginRight: 10 }}>
-          <Badge badgeContent={2} color="error">
+          {props.cartList && props.cartList.length > 0 && (
+            <Badge badgeContent={props.cartList.length} color="error">
+              <ShoppingCart style={{ color: 'white' }} />
+            </Badge>
+          )}
+          {(!props.cartList || props.cartList.length === 0) && (
             <ShoppingCart style={{ color: 'white' }} />
-          </Badge>
+          )}
         </IconButton>
       </Link>
     </div>
   </AppBar>
 );
 
-export default withStyles(styles)(MainAppBar);
+function mapStateToProps(state) {
+  return {
+    cartList: state.cartList,
+  };
+}
+
+export default connect(mapStateToProps)(withStyles(styles)(MainAppBar));

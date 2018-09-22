@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import { withStyles } from '@material-ui/core/styles';
 import { TextField, Button, Snackbar } from '@material-ui/core';
 import { AddCircleOutline } from '@material-ui/icons';
+
+import * as actions from '../../../redux/actions';
 
 const styles = {
   wrapper: {
@@ -27,11 +30,17 @@ class InputList extends Component {
   }
 
   onAddItem() {
+    const { inputItem } = this.state;
     if (this.state.inputItem.length === 0) {
       this.setState({ errorMsg: 'Please enter an item to add.' });
+    } else if (this.props.buyList.indexOf(inputItem) >= 0) {
+      this.setState({ errorMsg: `You already have ${inputItem} in your grocery list.` });
+    } else if (this.props.cartList.indexOf(inputItem) >= 0) {
+      this.setState({ errorMsg: `You already have ${inputItem} in your cart.` });
     } else {
-      const item = this.state.inputItem;
-      this.setState({ errorMsg: item });
+      this.props.addItemToBuyList(this.state.inputItem);
+      this.setState({ inputItem: '' });
+      // console.log(...this.props.buyList);
     }
   }
 
@@ -59,7 +68,7 @@ class InputList extends Component {
           </Button>
         </section>
         <section>
-          To buy list
+          {this.props.buyList}
         </section>
         <aside>
           <Snackbar
@@ -75,4 +84,11 @@ class InputList extends Component {
   }
 }
 
-export default withStyles(styles)(InputList);
+function mapStateToProps(state) {
+  return {
+    buyList: state.buyList,
+    cartList: state.cartList,
+  };
+}
+
+export default connect(mapStateToProps, actions)(withStyles(styles)(InputList));

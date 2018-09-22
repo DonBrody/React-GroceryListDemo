@@ -6,9 +6,12 @@ import {
   Switch,
 } from 'react-router-dom';
 
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 import Main from './views';
+import reducers from './redux/reducers';
 
 const theme = createMuiTheme({
   palette: {
@@ -22,12 +25,14 @@ const theme = createMuiTheme({
 });
 
 ReactDOM.render(
-  <BrowserRouter>
-    <MuiThemeProvider theme={theme}>
-      <Switch>
-        <Route path="/" component={Main} />
-      </Switch>
-    </MuiThemeProvider>
-  </BrowserRouter>,
+  <Provider store={createStore(reducers)}>
+    <BrowserRouter>
+      <MuiThemeProvider theme={theme}>
+        <Switch>
+          <Route path="/" component={Main} />
+        </Switch>
+      </MuiThemeProvider>
+    </BrowserRouter>
+  </Provider>,
   document.getElementById('react-container'),
 );
