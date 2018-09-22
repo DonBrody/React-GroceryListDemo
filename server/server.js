@@ -15,7 +15,7 @@ app.use('*/static', express.static(`${ENV_DIR}/img`));
 // setup routing
 router.use('/', (req, res) => {
   res.render('index', {
-    title: 'Florida Blue Code Sample',
+    title: 'Grocery List Builder',
   });
 });
 

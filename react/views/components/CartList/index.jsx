@@ -3,7 +3,7 @@ import { PropTypes } from 'prop-types';
 import { connect } from 'react-redux';
 
 import { withStyles } from '@material-ui/core/styles';
-import { AddShoppingCart } from '@material-ui/icons';
+import { RemoveShoppingCart } from '@material-ui/icons';
 import {
   Paper,
   List,
@@ -22,7 +22,7 @@ const styles = theme => ({
     },
   },
   listItemIcon: {
-    color: theme.palette.accent.main,
+    color: theme.palette.error.main,
   },
   emptyListFeedback: {
     textAlign: 'center',
@@ -30,20 +30,20 @@ const styles = theme => ({
   },
 });
 
-const BuyList = props => (
+const CartList = props => (
   <Paper style={{ padding: 20 }} elevation={5}>
-    {props.buyList && props.buyList.length > 0 && (
+    {props.cartList && props.cartList.length > 0 && (
       <List>
-        {props.buyList && props.buyList.map(item => (
+        {props.cartList.map(item => (
           <ListItem>
             <ListItemText primary={item} />
             <ListItemSecondaryAction>
-              <Tooltip title={`Add ${item} to cart`}>
+              <Tooltip title={`Remove ${item} from cart`}>
                 <IconButton
                   className={props.classes.listItemButton}
-                  onClick={() => { props.onAddItemToCart(item); }}
+                  onClick={() => { props.onRemoveItemFromCart(item); }}
                 >
-                  <AddShoppingCart className={props.classes.listItemIcon} />
+                  <RemoveShoppingCart className={props.classes.listItemIcon} />
                 </IconButton>
               </Tooltip>
             </ListItemSecondaryAction>
@@ -51,20 +51,20 @@ const BuyList = props => (
         ))}
       </List>
     )}
-    {(!props.buyList || props.buyList.length === 0) && (
-      <h5 className={props.classes.emptyListFeedback}>No items in grocery list.</h5>
+    {(!props.cartList || props.cartList.length === 0) && (
+      <h5 className={props.classes.emptyListFeedback}>No items in shopping cart.</h5>
     )}
   </Paper>
 );
 
 function mapStateToProps(state) {
   return {
-    buyList: state.buyList,
+    cartList: state.cartList,
   };
 }
 
-BuyList.propTypes = {
-  onAddItemToCart: PropTypes.func.isRequired,
+CartList.propTypes = {
+  onRemoveItemFromCart: PropTypes.func.isRequired,
 };
 
-export default withStyles(styles)(connect(mapStateToProps)(BuyList));
+export default withStyles(styles)(connect(mapStateToProps)(CartList));

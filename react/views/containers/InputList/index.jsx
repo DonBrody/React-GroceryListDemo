@@ -26,7 +26,6 @@ class InputList extends Component {
     super(props);
     this.state = {
       inputItem: '',
-      buyListKey: 0,
       errorMsg: null,
     };
     this.onAddItem = this.onAddItem.bind(this);
@@ -50,10 +49,6 @@ class InputList extends Component {
   onAddItemToCart(item) {
     this.props.addItemToCart(item);
     this.props.removeItemFromBuyList(item);
-
-    // eslint-disable-next-line react/no-access-state-in-setstate
-    const nextKey = this.state.buyListKey + 1;
-    this.setState({ buyListKey: nextKey });
   }
 
   render() {
@@ -80,10 +75,7 @@ class InputList extends Component {
           </Button>
         </section>
         <section>
-          <BuyList
-            key={this.state.buyListKey}
-            onAddItemToCart={this.onAddItemToCart}
-          />
+          <BuyList onAddItemToCart={this.onAddItemToCart} />
         </section>
         <aside>
           <Snackbar
